@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +44,7 @@ public class AddressBookController {
     @GetMapping("/contact")
     public String getAllContact(Model model, @RequestParam(name = "startIndex") String startIndex){
         List<Contact> resultFromService =  service.findAll(Integer.parseInt(startIndex));
+        model.addAttribute("contacts", resultFromService);
         return "listContact";
     }
 
@@ -53,7 +55,8 @@ public class AddressBookController {
         logger.log(Level.INFO, "Phone " + contact.getPhone());
         logger.log(Level.INFO, "Email " + contact.getEmail());
         service.save(contact);
-
+        httpResponse.setStatus(HttpStatus.CREATED.value());
+        model.addAttribute("contact", contact);
         return "showContact";
     }
 }
