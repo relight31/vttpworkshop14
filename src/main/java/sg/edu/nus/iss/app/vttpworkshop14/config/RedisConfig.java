@@ -19,31 +19,33 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
     private Logger logger = Logger.getLogger(RedisConfig.class.getName());
-    @Value("${spring.redis.host}") //defines redis host name
+    @Value("${spring.redis.host}") // defines redis host name
     private String redisHost;
 
     @Value("${spring.redis.port}")
     private Optional<Integer> redisPort;
 
-    @Bean //standalone configuration
-    @Scope("singleton") // singleton = only 1 instance of this bean can be generated and cached. prevents duplicate config
-    public RedisTemplate <String, Object> redisTemplate(){
-        final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(); //instantiate
+    @Bean // standalone configuration
+    @Scope("singleton") // singleton = only 1 instance of this bean can be generated and cached.
+                        // prevents duplicate config
+    public RedisTemplate<String, Object> redisTemplate() {
+        final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(); // instantiate
 
-        logger.log(Level.INFO, "redisHost > " + redisHost + " redisPort "+ redisPort);
+        logger.log(Level.INFO, "redisHost > " + redisHost + " redisPort " + redisPort);
 
-        config.setHostName(redisHost); //to know what redis db to connect to
+        config.setHostName(redisHost); // to know what redis db to connect to
         config.setPort(redisPort.get());
 
         final JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().build();
-        final JedisConnectionFactory jedisFac = new JedisConnectionFactory(config,jedisClient);
+        final JedisConnectionFactory jedisFac = new JedisConnectionFactory(config, jedisClient);
         jedisFac.afterPropertiesSet();
 
-        RedisTemplate<String,Object> template = new RedisTemplate<String, Object>();
+        RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
 
         template.setConnectionFactory(jedisFac);
-        template.setKeySerializer(new StringRedisSerializer()); //setting up what type of values can be stored
-        template.setHashKeySerializer(new StringRedisSerializer()); //setting up what type of values can be stored in the map
+        template.setKeySerializer(new StringRedisSerializer()); // setting up what type of values can be stored
+        template.setHashKeySerializer(new StringRedisSerializer()); // setting up what type of values can be stored in
+                                                                    // the map
 
         RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer(getClass().getClassLoader());
 
