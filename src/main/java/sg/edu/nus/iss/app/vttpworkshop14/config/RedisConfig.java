@@ -26,8 +26,8 @@ public class RedisConfig {
     private Optional<Integer> redisPort;
 
     @Bean //standalone configuration
-    @Scope("singleton")
-    public RedisTemplate <String, Object> RedisTemplate(){
+    @Scope("singleton") // singleton = only 1 instance of this bean can be generated and cached. prevents duplicate config
+    public RedisTemplate <String, Object> redisTemplate(){
         final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(); //instantiate
 
         logger.log(Level.INFO, "redisHost > " + redisHost + " redisPort "+ redisPort);

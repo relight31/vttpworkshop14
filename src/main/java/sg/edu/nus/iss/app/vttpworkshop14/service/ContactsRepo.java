@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.app.vttpworkshop14.service;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,16 @@ public class ContactsRepo implements RedisRepo{
     private Logger logger = Logger.getLogger(ContactsRepo.class.getName());
     private static final String CONTACT_ENTITY = "contactList";
     @Autowired
-    RedisTemplate<String, Object> redisTemplate;
+    RedisTemplate<String, Object> redisTemplate; //redistemplate allows setup and config of serialiser
 
     @Override
     public void save(final Contact ctc){
         redisTemplate.opsForList().leftPush(CONTACT_ENTITY, ctc.getId());
         redisTemplate.opsForHash().put(CONTACT_ENTITY + "_Map", ctc.getId(), ctc);
+        logger.log(Level.INFO, "Contact saved succesfully");
     }
 
-    @Override
+    @Override // for code readability, don't need this actually
     public Contact findById(final String contactId){
         Contact result = (Contact)redisTemplate.opsForHash().get(CONTACT_ENTITY + "_Map", contactId);
         return result;
