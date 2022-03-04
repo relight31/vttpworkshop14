@@ -16,16 +16,16 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-@Configuration
+@Configuration // denotes as a config (for the redis connection)
 public class RedisConfig {
     private Logger logger = Logger.getLogger(RedisConfig.class.getName());
-    @Value("${spring.redis.host}") // defines redis host name
+    @Value("${spring.redis.host}") // Value means it will read the value from the application properties file
     private String redisHost;
 
     @Value("${spring.redis.port}")
     private Optional<Integer> redisPort;
 
-    @Bean // standalone configuration
+    @Bean
     @Scope("singleton") // singleton = only 1 instance of this bean can be generated and cached.
                         // prevents duplicate config
     public RedisTemplate<String, Object> redisTemplate() {

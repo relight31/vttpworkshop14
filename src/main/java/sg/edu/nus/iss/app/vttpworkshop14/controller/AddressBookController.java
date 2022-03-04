@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sg.edu.nus.iss.app.vttpworkshop14.model.Contact;
 import sg.edu.nus.iss.app.vttpworkshop14.service.ContactsRepo;
 
-@Controller
+@Controller // web controller tied to template engine
 public class AddressBookController {
     private Logger logger = Logger.getLogger(AddressBookController.class.getName());
 
@@ -43,6 +43,7 @@ public class AddressBookController {
 
     @GetMapping("/contact")
     public String getAllContact(Model model, @RequestParam(name = "startIndex") String startIndex) {
+        // RequestParam is the query string
         List<Contact> resultFromService = service.findAll(Integer.parseInt(startIndex));
         model.addAttribute("contacts", resultFromService);
         return "listContact";
@@ -50,6 +51,7 @@ public class AddressBookController {
 
     @PostMapping("/contact") // name for what the page defines
     public String contactSubmit(@ModelAttribute Contact contact, Model model, HttpServletResponse httpResponse) {
+        // ModelAttribute transports data from the controller + model to the view
         logger.log(Level.INFO, "ID " + contact.getId());
         logger.log(Level.INFO, "Name " + contact.getName());
         logger.log(Level.INFO, "Phone " + contact.getPhone());

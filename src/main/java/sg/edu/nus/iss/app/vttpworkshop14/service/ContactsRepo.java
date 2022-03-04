@@ -15,7 +15,7 @@ public class ContactsRepo implements RedisRepo {
     private Logger logger = Logger.getLogger(ContactsRepo.class.getName());
     private static final String CONTACT_ENTITY = "contactList";
     @Autowired
-    RedisTemplate<String, Object> redisTemplate; // redistemplate allows setup and config of serialiser
+    RedisTemplate<String, Object> redisTemplate; // RedisTemplate allows setup and config of serialiser
 
     @Override
     public void save(final Contact ctc) {
@@ -24,7 +24,12 @@ public class ContactsRepo implements RedisRepo {
         logger.log(Level.INFO, "Contact saved succesfully");
     }
 
-    @Override // for code readability, don't need this actually
+    @Override
+    /*
+     * for code readability, don't need this actually. But REQUIRED when you
+     * implement an interface cos you must override all methods in user-defined
+     * interfaces
+     */
     public Contact findById(final String contactId) {
         Contact result = (Contact) redisTemplate.opsForHash().get(CONTACT_ENTITY + "_Map", contactId);
         return result;

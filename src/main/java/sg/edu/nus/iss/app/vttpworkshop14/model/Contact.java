@@ -5,7 +5,7 @@ import java.util.Random;
 
 //represents each contact's information
 
-public class Contact implements Serializable{
+public class Contact implements Serializable { // Serializable is a high level object, no methods you can override
     private String id;
     private String name;
     private String phone;
@@ -16,10 +16,10 @@ public class Contact implements Serializable{
     }
 
     // public Contact(String id, String name, String phone, String email) {
-    //     this.id = id;
-    //     this.name = name;
-    //     this.phone = phone;
-    //     this.email = email;
+    // this.id = id;
+    // this.name = name;
+    // this.phone = phone;
+    // this.email = email;
     // }
 
     public Contact(String name, String phone, String email) {
@@ -61,12 +61,12 @@ public class Contact implements Serializable{
         this.email = email;
     }
 
-    private synchronized String generate(int numChars){
+    private synchronized String generate(int numChars) {
         Random r = new Random();
         StringBuilder strBuilder = new StringBuilder();
-        while(strBuilder.length()<numChars){
+        while (strBuilder.length() < numChars) {
             strBuilder.append(Integer.toHexString(r.nextInt()));
         }
-        return strBuilder.toString().substring(0,numChars);
+        return strBuilder.toString().substring(0, numChars);
     }
 }
